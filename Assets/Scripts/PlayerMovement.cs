@@ -69,6 +69,11 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer(){
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        Debug.Log(moveDirection);
+        
+        if (moveDirection != Vector3.zero) {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), 0.15F);
+        }
 
         // on ground
         if (isGrounded){
