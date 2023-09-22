@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    bool readyToJump;
+    bool readyToJump = true;
 
     [Header("Groud Check")]
     public float playerHeight;
@@ -36,72 +36,76 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        rb.drag = groundDrag;
     }
 
     void Update()
     {
         // groud check
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f +0.2f, whatIsGround);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedControl();
 
         // jump
-        if (Input.GetKeyDown(jumpKey) && isGrounded && readyToJump){
+        if (Input.GetKeyDown(jumpKey) && isGrounded && readyToJump)
+        {
             Jump();
-            readyToJump = false;
             Invoke("ResetJump", jumpCooldown);
-        }
-        
-        // drag
-        if (isGrounded){
-            rb.drag = groundDrag;
-        } else {
-            rb.drag = 0f;
         }
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         MovePlayer();
     }
 
-    private void MovePlayer(){
+    private void MovePlayer()
+    {
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
         Debug.Log(moveDirection);
-        
-        if (moveDirection != Vector3.zero) {
+
+        if (moveDirection != Vector3.zero)
+        {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), 0.15F);
         }
 
         // on ground
-        if (isGrounded){
+        if (isGrounded)
+        {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         }
-        else if(!isGrounded){
+        else if (!isGrounded)
+        {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
 
-    private void SpeedControl(){
+    private void SpeedControl()
+    {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         // limit velcoity if needed
-        if (flatVel.magnitude > moveSpeed){
+        if (flatVel.magnitude > moveSpeed)
+        {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
 
-    private void Jump(){
+    private void Jump()
+    {
         // reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        readyToJump = false;
     }
 
-    private void ResetJump(){
+    private void ResetJump()
+    {
         readyToJump = true;
     }
 }
