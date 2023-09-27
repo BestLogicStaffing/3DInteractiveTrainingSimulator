@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(jumpKey) && isGrounded && readyToJump)
         {
             Jump();
-            Invoke("ResetJump", jumpCooldown);
+            Invoke("ResetJump", jumpCooldown); //not sure why we need this if we can just check isGrounded
         }
     }
 
@@ -65,13 +65,12 @@ public class PlayerMovement : MonoBehaviour
     {
         // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        Debug.Log(moveDirection);
-
+        /* commented out for first person camera
         if (moveDirection != Vector3.zero)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), 0.15F);
         }
-
+        */
         // on ground
         if (isGrounded)
         {
@@ -81,13 +80,14 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
+
     }
 
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        // limit velcoity if needed
+        // limit velocity if needed
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
