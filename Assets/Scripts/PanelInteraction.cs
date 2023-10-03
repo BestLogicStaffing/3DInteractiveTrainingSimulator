@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * Allows the player to interact with the prefab "interactable cube"
+ * Allows the player to interact using the prefab "InteractCube" on objects with "interact cube"
  */
 
 public class PanelInteraction : MonoBehaviour
@@ -19,7 +19,7 @@ public class PanelInteraction : MonoBehaviour
         {
             cancel_time -= Time.deltaTime;
         }
-        if(cancel_time <= 0 && currently_interacting && Input.GetKeyDown(KeyCode.Space))
+        else if(cancel_time <= 0 && currently_interacting && Input.GetKeyDown(KeyCode.Space))
         {
             currently_interacting = false;
             playerMovement.canMove = true;
@@ -35,9 +35,11 @@ public class PanelInteraction : MonoBehaviour
             cc.interaction_notice_text.SetActive(true); //show "Press SPACE to interact"
             if (Input.GetKeyDown(KeyCode.Space) && !currently_interacting)
             {
-                cancel_time = 0.05f;
+                cancel_time = 0.03f;
                 currently_interacting = true;
                 playerMovement.canMove = false;
+
+                //display the panel text
                 InteractableObject obj = other.GetComponent<InteractableObject>();
                 cc.Interact(obj.panel_type, obj.sprite, obj.name_text, obj.message_text);
             }
