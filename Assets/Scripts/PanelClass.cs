@@ -5,14 +5,15 @@ using TMPro;
 
 /*
  * the panels in the canvas
- * EXAMPLE: Panel 0 has a name, message, and picture
+ * Panel 0 has a name, message, and picture
+ * Panel 1 has only message
  */
 
 public class PanelClass : MonoBehaviour
 {
     public int panel_type; //0 for one with image, 1 with no image
-    public GameObject sprite;
-    public GameObject panel_object, name_box;
+    public GameObject panel_object, sprite; //panel_object is the actual panel containing the sprite, name_text, and message_text.
+                                            //sprite is the picture that is displayed
     public TMP_Text name_text, message_text;
 
 }

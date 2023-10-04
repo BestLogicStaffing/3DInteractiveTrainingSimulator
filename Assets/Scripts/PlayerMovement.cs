@@ -5,6 +5,7 @@ using UnityEngine;
 /*
  * Controls the player
  * Direction of movement is dependent on where the camera is pointing
+ * Some code was leftover from before FALL 2023, but it will not be used (mostly jumping code)
  */
 
 public class PlayerMovement : MonoBehaviour
@@ -27,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
-
 
     public Transform orientation;
 
