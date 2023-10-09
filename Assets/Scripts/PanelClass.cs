@@ -15,5 +15,4 @@ public class PanelClass : MonoBehaviour
     public GameObject panel_object, sprite; //panel_object is the actual panel containing the sprite, name_text, and message_text.
                                             //sprite is the picture that is displayed
     public TMP_Text name_text, message_text;
-
 }

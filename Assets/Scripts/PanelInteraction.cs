@@ -4,6 +4,7 @@ using UnityEngine;
 
 /*
  * Allows the player to interact using their prefab "InteractCube" on objects with "interact cube"
+ * This script is attached to the player
  */
 
 public class PanelInteraction : MonoBehaviour
@@ -11,20 +12,20 @@ public class PanelInteraction : MonoBehaviour
     public CanvasController cc;
     public PlayerMovement playerMovement;
     bool currently_interacting = false;
-
+    public bool currently_optioning = false;
     InteractableObject obj;
 
     private void Update()
     {
-        if(currently_interacting && Input.GetKeyDown(KeyCode.Space) && (cc.panels[obj.panel_type].message_text.text == obj.messages[cc.index]) )
+        if (currently_interacting && Input.GetKeyDown(KeyCode.Space) && !currently_optioning && (cc.panels[obj.panel_type].message_text.text == obj.messages[cc.index]))
+        {   //when the player can skip to the next message
+            cc.NextLine();
+        }
+        if (cc.index == -1) //no more text
         {
-            cc.NextLine(obj);
-            if(cc.index == -1) //no more text
-            {
-                currently_interacting = false;
-                playerMovement.canMove = true;
-            }
-        }        
+            currently_interacting = false;
+            playerMovement.canMove = true;
+        }
     }
 
     private void OnTriggerStay(Collider other)
