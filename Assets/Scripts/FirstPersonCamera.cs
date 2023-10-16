@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * A first person camera, there exists a third person camera too if needed
+ * Fall 2023:
+ * A first person camera, there exists a third person camera too if needed, but the movement code will need to be changed
  * I copied code from this tutorial
  * https://www.youtube.com/watch?v=f473C43s8nE&ab_channel=Dave%2FGameDevelopment
  */

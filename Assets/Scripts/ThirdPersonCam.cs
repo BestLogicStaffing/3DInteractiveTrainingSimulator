@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Fall 2023:
+ * Not being used because this is a First Person Game
+ * Just being kept here for "nicety"
+ */
+
 public class ThirdPersonCam : MonoBehaviour
 {
     [Header("References")]

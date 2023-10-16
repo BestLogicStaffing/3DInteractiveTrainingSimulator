@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /*
+ * Fall 2023:
  * Keeps control of the panels to show information to the player
  * This is not the actual panels, but it instead turns them on/off and controls the text on them
  * 
@@ -35,12 +36,25 @@ public class CanvasController : MonoBehaviour
             panels[0].sprite.GetComponent<Image>().sprite = obj.sprite;
             panels[0].name_text.text = obj.name_text;
         }
-        else //panel with no image
+        else if (obj.panel_type == 1) //panel with no image
         {
             panels[1].panel_object.SetActive(true);
         }
+        else if(obj.panel_type == 2)
+        {
+            panels[2].panel_object.SetActive(true);
+            panels[2].sprite.GetComponent<Image>().sprite = obj.sprite;
+            panels[2].button_text.text = obj.panel2_button_text;
+            Cursor.lockState = CursorLockMode.None; //allow player to move cursor
+            Cursor.visible = true;
+        }
+        else{Debug.Log("panel type is not 0-2");}   //just a debug
+
         index = 0; option_index = 0; option_message_index = -1;
-        StartCoroutine(TypeLine());
+        if(obj.panel_type != 2)
+        {
+            StartCoroutine(TypeLine());
+        }
     }
 
     IEnumerator TypeLine()
@@ -109,10 +123,7 @@ public class CanvasController : MonoBehaviour
         }
         else
         {
-            panelInteraction.currently_optioning = false;
-            index = -1; //shows that there is no more text left
-            panels[0].panel_object.SetActive(false);
-            panels[1].panel_object.SetActive(false);
+            ClosePanels();
         }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -123,4 +134,22 @@ public class CanvasController : MonoBehaviour
         option_chosen = i;
         NextLine();
     }
+
+    public void ChangePanel2Sprite()
+    {
+        //after changing the sprite change the button event to close the panel
+        panels[2].sprite.GetComponent<Image>().sprite = obj.on_click_sprite;
+        panels[2].button.onClick.AddListener(ClosePanels);
+        panels[2].button_text.text = "Exit";
+    }
+
+    public void ClosePanels()
+    {
+        panelInteraction.currently_optioning = false;
+        index = -1; //shows that there is no more text left
+        panels[0].panel_object.SetActive(false);
+        panels[1].panel_object.SetActive(false);
+        panels[2].panel_object.SetActive(false);
+    }
+
 }

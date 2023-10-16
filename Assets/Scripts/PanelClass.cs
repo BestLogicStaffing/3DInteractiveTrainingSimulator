@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 /*
- * the panels in the canvas
+ * Fall 2023:
+ * the panels are in the canvas
  * Panel 0 has a name, message, and picture
  * Panel 1 has only message
+ * Panel 2 has only picture
  */
 
 public class PanelClass : MonoBehaviour
@@ -15,4 +18,7 @@ public class PanelClass : MonoBehaviour
     public GameObject panel_object, sprite; //panel_object is the actual panel containing the sprite, name_text, and message_text.
                                             //sprite is the picture that is displayed
     public TMP_Text name_text, message_text; //where the name and messages will appear
+
+    public Button button;
+    public TMP_Text button_text; //text on a button for panel_type = 2
 }

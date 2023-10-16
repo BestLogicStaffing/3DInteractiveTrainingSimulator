@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
+ * Fall 2023:
  * Controls the player
  * Direction of movement is dependent on where the camera is pointing
- * Some code was leftover from before FALL 2023, but it will not be used (mostly jumping code)
  */
 
 public class PlayerMovement : MonoBehaviour
@@ -14,21 +14,6 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public bool canMove = true;
 
-    public float groundDrag;
-    /*
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-    bool readyToJump = true;
-
-    [Header("Groud Check")]
-    public float playerHeight;
-    public LayerMask whatIsGround;
-    bool isGrounded;
-
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
-    */
     public Transform orientation;
 
     float horizontalInput;
@@ -42,26 +27,13 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        rb.drag = groundDrag;
     }
 
     void Update()
     {
-        // groud check
-        //isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedControl();
-
-        // This was left from 2023 Summer (I think). I don't know why we would need to jump
-        /*
-        if (Input.GetKeyDown(jumpKey) && isGrounded && readyToJump)
-        {
-            Jump();
-            Invoke("ResetJump", jumpCooldown); //not sure why we need this if we can just check isGrounded
-        }
-        */
     }
 
     private void FixedUpdate()
@@ -75,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // calculate movement direction
             moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-            // commented out to work for first person camera
+            // commented out to work for first person camera, this is third person camera code
             /*
             if (moveDirection != Vector3.zero)
             {
@@ -84,17 +56,6 @@ public class PlayerMovement : MonoBehaviour
             */
 
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-            // some code that gave you a different speed in the air, but since I commented out jumping it is useless
-            /*
-            if (isGrounded)
-            {
-                rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-            }
-            else if (!isGrounded)
-            {
-                rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-            }
-            */
         }
     }
 
@@ -109,19 +70,4 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
-    /*
-    private void Jump()
-    {
-        // reset y velocity
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        readyToJump = false;
-    }
-
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
-    */
 }
