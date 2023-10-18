@@ -11,6 +11,8 @@ using UnityEngine;
 public class PanelInteraction : MonoBehaviour
 {
     public CanvasController cc;
+    [SerializeField]
+    CheckListScript checkList;
     public PlayerMovement playerMovement;
     bool currently_interacting = false;
     public bool currently_optioning = false;
@@ -41,16 +43,22 @@ public class PanelInteraction : MonoBehaviour
     {
         if(other.tag == "Interactable") //interacting with an "InteractableObject"
         {
-            cc.interaction_notice_text.SetActive(true); //show "Press SPACE to interact"
-            if (Input.GetKeyDown(KeyCode.Space) && !currently_interacting)
+            //prevent the player from completing stuff without the checklist so you just can't interact with them at all
+            if ((other.GetComponent<InteractableObject>().item != "" && checkList.checkListAppeared) ||
+                other.GetComponent<InteractableObject>().item == "" ||
+                other.GetComponent<InteractableObject>().item == "CheckList")
             {
-                currently_interacting = true;
-                playerMovement.canMove = false;
+                cc.interaction_notice_text.SetActive(true); //show "Press SPACE to interact"
+                if (Input.GetKeyDown(KeyCode.Space) && !currently_interacting)
+                {
+                    currently_interacting = true;
+                    playerMovement.canMove = false;
 
-                //display the panel text
-                obj = other.GetComponent<InteractableObject>();
-                cc.Interact(obj);
-                displaying_panel_2 = obj.panel_type == 2 ? true : false;
+                    //display the panel text
+                    obj = other.GetComponent<InteractableObject>();
+                    cc.Interact(obj);
+                    displaying_panel_2 = obj.panel_type == 2 ? true : false;
+                }
             }
         }
     }

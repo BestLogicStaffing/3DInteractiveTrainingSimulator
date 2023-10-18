@@ -6,6 +6,13 @@ using TMPro;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 
+/*
+ * Fall 2023:
+ * I am not sure what this is because it is never used.
+ * I think it is like the CanvasController
+ * It was made by a previous team
+ */
+
 public class TextPopUp : MonoBehaviour
 {
 

@@ -14,9 +14,7 @@ public class GuideArrow : MonoBehaviour
 
     public void MoveArrow(GameObject obj)
     {
-        Vector3 position = obj.transform.position;
-        position.y += 1.5f;
-        arrow.transform.position = position;
+        arrow.transform.position = obj.transform.position;
     }
 
     public void ShowHideArrow(bool show)

@@ -11,6 +11,8 @@ using TMPro;
  * 
  * This video was used to help text scroll and for objects to have more than 1 message
  * https://www.youtube.com/watch?v=8oTYabhj248&ab_channel=BMo
+ * 
+ * Really try to understand this because CanvasController is an important script as it is used everywhere
  */
 
 public class CanvasController : MonoBehaviour
@@ -25,30 +27,43 @@ public class CanvasController : MonoBehaviour
     InteractableObject obj;
 
     public PanelInteraction panelInteraction;
+    public CheckListScript checkList;
 
     //When the player presses SPACE next to an "InteractableObject" you "Interact" with it
     public void Interact(InteractableObject obj)
     {
         this.obj = obj;
-        if (obj.panel_type == 0) //panel with image
+        if (obj.panel_type == 0) //panel with image and text
         {
             panels[0].panel_object.SetActive(true);
-            panels[0].sprite.GetComponent<Image>().sprite = obj.sprite;
+            panels[0].sprite.GetComponent<Image>().sprite = obj.sprites[0];
             panels[0].name_text.text = obj.name_text;
         }
-        else if (obj.panel_type == 1) //panel with no image
+        else if (obj.panel_type == 1) //panel with text
         {
             panels[1].panel_object.SetActive(true);
         }
-        else if(obj.panel_type == 2)
+        else if(obj.panel_type == 2) //panel with image (also the only panel that can change its sprite)
         {
             panels[2].panel_object.SetActive(true);
-            panels[2].sprite.GetComponent<Image>().sprite = obj.sprite;
-            panels[2].button_text.text = obj.panel2_button_text;
+            panels[2].sprite.GetComponent<Image>().sprite = obj.sprites[obj.sprite_index];
+            if (obj.has_multiple_sprites) //maybe the object does not need to "change sprites" EX: signing contract
+            {
+                panels[2].message_text.text = obj.messages[0];
+                panels[2].button.SetActive(true);
+            }
+            else
+            {
+                panels[2].button.SetActive(false);
+            }
+            if (obj.sprite_index == obj.sprites.Length - 1) //hide the button because all sprites have been used
+            {
+                panels[2].button.SetActive(false);
+            }
             Cursor.lockState = CursorLockMode.None; //allow player to move cursor
             Cursor.visible = true;
         }
-        else{Debug.Log("panel type is not 0-2");}   //just a debug
+        else{Debug.Log("panel type is not 0-2");}   //debug
 
         index = 0; option_index = 0; option_message_index = -1;
         if(obj.panel_type != 2)
@@ -101,18 +116,28 @@ public class CanvasController : MonoBehaviour
                     i++;
                     option_message_index++;
                     option_boxes[i].SetActive(true);
+                    foreach(GameObject box in option_boxes)
+                    {
+                        Vector3 newPos = box.transform.localPosition; //move boxes based on how many options are available
+                        newPos.x -= 125;
+                        box.transform.localPosition = newPos;
+                    }
                     option_boxes_text[i].text = obj.option_messages[option_message_index];
-                } while (option_message_index < obj.option_messages.Length - 1 && obj.option_messages[option_message_index + 1] != "");
+                } while (option_message_index < obj.option_messages.Length - 1 && obj.option_messages[option_message_index + 1] != ""); //options are split up by spaces and stop showing when there are no more options left
                 option_message_index++;
             }
         }
     }
 
-    public void NextLine()
+    public void NextLine() //resets all text to work for the next line
     {
         continue_notice_text.SetActive(false); //hide the CONTINUE message
         foreach (GameObject box in option_boxes)
         {
+            //move boxes back
+            Vector3 newPos = box.transform.localPosition;
+            newPos.x += 375;
+            box.transform.localPosition = newPos;
             box.SetActive(false);
         }
         if (index < obj.messages.Length - 1)
@@ -137,14 +162,22 @@ public class CanvasController : MonoBehaviour
 
     public void ChangePanel2Sprite()
     {
-        //after changing the sprite change the button event to close the panel
-        panels[2].sprite.GetComponent<Image>().sprite = obj.on_click_sprite;
-        panels[2].button.onClick.AddListener(ClosePanels);
-        panels[2].button_text.text = "Exit";
+        //go to next sprite
+        obj.sprite_index++;
+        panels[2].sprite.GetComponent<Image>().sprite = obj.sprites[obj.sprite_index];
+        if (obj.sprite_index == obj.sprites.Length - 1) //hide the button because there are no more sprites to show
+        {
+            panels[2].button.SetActive(false);
+        }
     }
 
     public void ClosePanels()
     {
+        if (obj.item != "")
+        {
+            Debug.Log("give item: " + obj.item);
+            checkList.AddItem(obj.item);
+        }
         panelInteraction.currently_optioning = false;
         index = -1; //shows that there is no more text left
         panels[0].panel_object.SetActive(false);

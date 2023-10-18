@@ -10,6 +10,8 @@ using TMPro;
  * Panel 0 has a name, message, and picture
  * Panel 1 has only message
  * Panel 2 has only picture
+ * 
+ * message_text is used for all panels, but panel 2 uses it for its button text
  */
 
 public class PanelClass : MonoBehaviour
@@ -19,6 +21,5 @@ public class PanelClass : MonoBehaviour
                                             //sprite is the picture that is displayed
     public TMP_Text name_text, message_text; //where the name and messages will appear
 
-    public Button button;
-    public TMP_Text button_text; //text on a button for panel_type = 2
+    public GameObject button; //to turn on or off the button
 }
