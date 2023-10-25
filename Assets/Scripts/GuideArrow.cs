@@ -17,7 +17,7 @@ public class GuideArrow : MonoBehaviour
         arrow.transform.position = obj.transform.position;
     }
 
-    public void ShowHideArrow(bool show)
+    public void ShowHideArrow(bool show) //might not be used
     {
         //switch the arrow to hide or show
         if (show)
