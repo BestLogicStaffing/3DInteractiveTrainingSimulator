@@ -13,6 +13,7 @@ using TMPro;
  * https://www.youtube.com/watch?v=8oTYabhj248&ab_channel=BMo
  * 
  * Really try to understand this because CanvasController is an important script that is used everywhere
+ * This script is attached to the Canvas
  */
 
 public class CanvasController : MonoBehaviour
@@ -25,14 +26,14 @@ public class CanvasController : MonoBehaviour
     float fadeTime = 1.5f; //how many seconds it takes to fade in/out the answer image
     float textSpeed = 0.03f; //how many seconds it takes to display the next character
     public int index; //track how many messages are left in an InteractableObject's message list (index = -1 means no more messages)
-    [SerializeField] int option_index, option_message_index; //which options is it on
+    [SerializeField] int option_index, option_message_index; //option_index = which options is it on, option_message_index = which message to display on the options
     public GameObject interaction_notice_text, continue_notice_text;
     InteractableObject obj;
     public PanelInteraction panelInteraction;
     public CheckListScript checkList;
 
     //When the player presses SPACE next to an "InteractableObject" you "Interact" with it
-    public void Interact(InteractableObject obj)
+    public void Interact(InteractableObject obj) //does different things based on which panel to show
     {
         this.obj = obj;
         if (obj.panel_type == 0) //panel with image and text
@@ -83,27 +84,16 @@ public class CanvasController : MonoBehaviour
         foreach (char c in obj.messages[index].ToCharArray())
         {
             panels[obj.panel_type].message_text.text += c;
-            yield return new WaitForSeconds(textSpeed);
+            yield return new WaitForSecondsRealtime(textSpeed);
         }
-
         if (index < obj.messages.Length - 1)
         {
-            if(obj.option_messages.Length == 0 || (obj.option_messages.Length > 0 && option_index <= obj.when_show_options.Length - 1 && obj.when_show_options[option_index] != index))
+            if(obj.option_messages.Length == 0 || (option_index <= obj.when_show_options.Length - 1 && obj.when_show_options[option_index] != index))
             {
                 continue_notice_text.SetActive(true);
-                if (obj.panel_type == 0) //move it according to which panel is showing
-                {
-                    continue_notice_text.transform.localPosition = new Vector3(220, -214, 0);
-                }
-                else
-                {
-                    continue_notice_text.transform.localPosition = new Vector3(0, -214, 0);
-                }
             }
         }
         panelInteraction.currently_optioning = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         if (obj.option_messages.Length > 0) //if the player has to select an option
         {
             //show options
@@ -114,14 +104,14 @@ public class CanvasController : MonoBehaviour
                 Cursor.visible = true;
                 panelInteraction.currently_optioning = true;
                 option_index++;
-                do
+                do //show how many options are available
                 {
                     i++;
                     option_message_index++;
                     option_boxes[i].SetActive(true);
-                    foreach(GameObject box in option_boxes)
+                    foreach(GameObject box in option_boxes) //move boxes based on how many options are available
                     {
-                        Vector3 newPos = box.transform.localPosition; //move boxes based on how many options are available
+                        Vector3 newPos = box.transform.localPosition;
                         newPos.x -= 125;
                         box.transform.localPosition = newPos;
                     }
@@ -135,6 +125,8 @@ public class CanvasController : MonoBehaviour
     public void NextLine() //resets all text to work for the next line
     {
         continue_notice_text.SetActive(false); //hide the CONTINUE message
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         for (int i = 0; i < 3; i++) //move boxes back
         {
             option_boxes[i].transform.localPosition = option_positions[i].transform.localPosition;
@@ -150,8 +142,6 @@ public class CanvasController : MonoBehaviour
         {
             ClosePanels();
         }
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public void ChooseOption(int i)
@@ -180,10 +170,10 @@ public class CanvasController : MonoBehaviour
     {
         answer.GetComponent<Image>().color = new Color(1, 1, 1, fadeTime);
         answer_text.color = new Color(fadeTime, answer_text.color.g, answer_text.color.b, fadeTime); //show the image and text for a while before fading out (if you want to fade in change the code, right now we only need fade out)
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSecondsRealtime(1);
         if (fadeOut)
         {
-            for (float i = fadeTime; i >= 0; i -= Time.deltaTime) //loop over fadeTime
+            for (float i = fadeTime; i >= -0.1; i -= Time.deltaTime) //loop over fadeTime
             {
                 answer.GetComponent<Image>().color = new Color(1, 1, 1, i);
                 answer_text.color = new Color(answer_text.color.r, answer_text.color.g, answer_text.color.b, i);
@@ -192,14 +182,14 @@ public class CanvasController : MonoBehaviour
         }
         else
         {
-            for (float i = 0; i <= fadeTime; i += Time.deltaTime)
+            for (float i = -0.1f; i <= fadeTime; i += Time.deltaTime)
             {
                 answer.GetComponent<Image>().color = new Color(1, 1, 1, i);
                 answer_text.color = new Color(answer_text.color.r, answer_text.color.g, answer_text.color.b, i);
                 yield return null;
             }
         }
-        yield return new WaitForSeconds(0.3f); //wait some time before changing the screen
+        yield return new WaitForSecondsRealtime(0.3f); //wait some time before changing the screen
         NextLine();
     }
 
@@ -216,16 +206,26 @@ public class CanvasController : MonoBehaviour
 
     public void ClosePanels()
     {
-        if (obj.item != "")
-        {
-            Debug.Log("give item: " + obj.item);
-            checkList.AddItem(obj.item);
-        }
         panelInteraction.currently_optioning = false;
+        continue_notice_text.SetActive(false);
+        interaction_notice_text.SetActive(false);
         index = -1; //shows that there is no more text left
         panels[0].panel_object.SetActive(false);
         panels[1].panel_object.SetActive(false);
         panels[2].panel_object.SetActive(false);
+        if (obj.item_slot == 2) //the clean up level
+        {
+            gameObject.GetComponent<CleanUp>().BeginCleanUp();
+            obj.gameObject.tag = "Untagged";    //to prevent press SPACE from showing
+        }
+        else if (obj.item_slot != -99)
+        {
+            checkList.AddItem(obj.item_slot);
+        }
+        if (obj.hide_object) //maybe we want to hide something
+        {
+            obj.transform.parent.gameObject.SetActive(false); //the interact cube is ALWAYS attached to an object
+        }
     }
 
 }

@@ -15,7 +15,7 @@ public class InteractableObject : MonoBehaviour
     public int panel_type; //0 for one with image, 1 with no image, 2 as just image
 
     public Sprite[] sprites; //a picture to show on panel_type = 0 and 2
-    public Vector2 sprite_size;
+    public Vector2 sprite_size; //AGAIN: must be the size of ALL the sprites in this InteractableObject
     public int sprite_index = 0;
 
     public string name_text;
@@ -25,6 +25,6 @@ public class InteractableObject : MonoBehaviour
     public string[] option_messages; //the text on the options (leave a message blank if you want multiple options in 1 conversation)
     public int[] correct_answers;
 
-    public string item; //does it add an item/check to the CheckList (adds item at end of interaction)
     public int item_slot; //what item number is it / what order is it in the game
+    public bool hide_object;
 }

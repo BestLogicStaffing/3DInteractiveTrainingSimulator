@@ -1,0 +1,48 @@
+A message from FALL 2023:
+
+
+Hello, I am the coder from FALL 2023. The other coder left before doing any work.
+I coded everything so far since FALL 2023.
+
+
+I designed the scripts to all work together.
+"PanelInteraction" and "CanvasController" are important since everything revolves around displaying panels and text.
+It should not be too hard to understand, but you should spend some time learning it. Play around in the game to see what I have done.
+
+So far you can press SPACEBAR to interact with objects that have the "Interact Cube" on them.
+The "Interact Cube" has the "InteractableObject" script which gives information on what to display like a name, messages, and options.
+When the player's "Interact Cube" intersects with a non-player "Interact Cube", the player can press SPACE to interact with it.
+Know that you can interact with objects through walls so I made all interact cubes not close to a wall the player can go behind
+
+"PanelClass" is used in "CanvasController" to set the sprites and text in a panel
+"Canvas Controller" is used to get the text from an "Interact Cube's" "InteractableObject" and put it on "PanelClass'" text
+
+"CheckListScript" checks boxes on a Clipboard image when AddItem(int X) is used on it (X is which box to check).
+"GuideArrow" just moves an arrow around the scene, but CheckListScript calls on it
+
+"CleanUp" is not finished but you are supposed to be able to clean up the table
+
+
+There is something wrong with the "Press SPACE to continue" text. 
+Sometimes when you press SPACEBAR really quickly the text stays, allowing you to skip un-skippable parts like questions.
+I am REALLY not sure why it happens because the WaitForSecondsRealTime should prevent it.
+
+
+Do not rush on coding. Don't feel like you have to get progress to show to the higher-ups
+It is important that you get the systems made first so that it will be easier later.
+The higher-ups want progress but worry about it. You are here for experience.
+When the other members tell you what to do, don't feel pressured by them either.
+They are not coders and believe that it should be easy to code things in if it can be described easily.
+Also, make sure that your teammates help you out. You might be responsible for decorating the levels, but try to get others to help.
+I had to do the all decorating since no one in my team knows how to use Unity.
+Know that the other members do not know how the game looks unless you send progress pictures and may assume that you already put their 3D models into the game when they post them
+
+
+
+ALSO PLEASE:
+ - sit up straight
+ - drink water
+ - rest your eyes
+ - stand up and move every 30-45 minutes
+
+ Good Job. I am proud

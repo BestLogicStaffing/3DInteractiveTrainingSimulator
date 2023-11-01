@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Fall 2023:
+ * A script to move the arrow and keep it looking at the player
+ * 
+ * CheckListScript uses this to move the arrow
+ * ShowHideArrow() is not being used
+ */
 public class GuideArrow : MonoBehaviour
 {
     [SerializeField]
@@ -17,9 +24,8 @@ public class GuideArrow : MonoBehaviour
         arrow.transform.position = obj.transform.position;
     }
 
-    public void ShowHideArrow(bool show) //might not be used
+    public void ShowHideArrow(bool show) //not used
     {
-        //switch the arrow to hide or show
         if (show)
         {
             arrow.SetActive(true);

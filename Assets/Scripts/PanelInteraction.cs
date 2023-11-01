@@ -28,9 +28,9 @@ public class PanelInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (!displaying_panel_2)
+        if (!displaying_panel_2) //panel 2 has no messages so don't even try doing NextLine()
         {
-            if (currently_interacting && Input.GetKeyDown(KeyCode.Space) && !currently_optioning && (cc.panels[obj.panel_type].message_text.text == obj.messages[cc.index]))
+            if (currently_interacting && !currently_optioning && Input.GetKeyDown(KeyCode.Space) && (cc.panels[obj.panel_type].message_text.text == obj.messages[cc.index]))
             {   //determines when the player can skip to the next message
                 cc.NextLine();
             }
@@ -47,24 +47,22 @@ public class PanelInteraction : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.tag == "Interactable") //interacting with an "InteractableObject"
+        if(other.CompareTag("Interactable")) //interacting with an "InteractableObject"
         {
             //prevent the player from completing stuff out of order or without the CheckList
-            if ((other.GetComponent<InteractableObject>().item != "" && checkList.checkListAppeared) &&
-                (other.GetComponent<InteractableObject>().item_slot == checkList.total_items) ||
-                other.GetComponent<InteractableObject>().item == "" ||
-                other.GetComponent<InteractableObject>().item == "CheckList")
+            if ((checkList.checkListAppeared && other.GetComponent<InteractableObject>().item_slot == checkList.total_items) ||
+                other.GetComponent<InteractableObject>().item_slot == -99 ||
+                other.GetComponent<InteractableObject>().item_slot == -1)
             {
                 cc.interaction_notice_text.SetActive(true); //show "Press SPACE to interact"
                 if (Input.GetKeyDown(KeyCode.Space) && !currently_interacting)
                 {
-                    
                     currently_interacting = true;
                     playerMovement.canMove = false;
                     //display the panel text
                     obj = other.GetComponent<InteractableObject>();
                     cc.Interact(obj);
-                    displaying_panel_2 = obj.panel_type == 2 ? true : false;
+                    displaying_panel_2 = obj.panel_type == 2;
                 }
             }
         }
@@ -73,6 +71,9 @@ public class PanelInteraction : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //hide "Press SPACE to interact"
-        cc.interaction_notice_text.SetActive(false);
+        if(other.CompareTag("Interactable"))
+        {
+            cc.interaction_notice_text.SetActive(false);
+        }
     }
 }
