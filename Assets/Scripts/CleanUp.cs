@@ -18,8 +18,6 @@ public class CleanUp : MonoBehaviour
     [SerializeField]
     GameObject checkList_object;
 
-    GameObject selected_object;
-
     private void Start()
     {
         player_camera.SetActive(true);
@@ -44,47 +42,5 @@ public class CleanUp : MonoBehaviour
         player_camera.SetActive(true);
         clean_up_camera.SetActive(false);
         checkList_object.GetComponent<CanvasGroup>().alpha = 1;
-    }
-
-    //https://www.youtube.com/watch?v=uNCCS6DjebA&ab_channel=AIA
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (selected_object == null)
-            {
-                RaycastHit hit = CastRay();
-                if (hit.collider != null)
-                {
-                    if (!hit.collider.CompareTag("Drag"))
-                    {
-                        return;
-                    }
-                    selected_object = hit.collider.gameObject;
-                }
-            }
-            else
-            {
-
-            }
-        }
-        if(selected_object != null)
-        {
-            Vector3 pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(selected_object.transform.position).z);
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(pos);
-            selected_object.transform.position = new Vector3(worldPos.x, 0.25f, worldPos.z);
-        }
-    }
-
-    private RaycastHit CastRay()
-    {
-        Vector3 screenMousePosFar = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.farClipPlane);
-        Vector3 screenMousePosNear = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
-        Vector3 worldMousePosFar = Camera.main.ScreenToWorldPoint(screenMousePosFar);
-        Vector3 worldMousePosNear = Camera.main.ScreenToWorldPoint(screenMousePosNear);
-        RaycastHit hit;
-        Physics.Raycast(worldMousePosNear, worldMousePosFar - worldMousePosNear, out hit);
-        return hit;
-
     }
 }
