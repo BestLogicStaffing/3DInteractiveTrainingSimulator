@@ -12,20 +12,22 @@ It should not be too hard to understand, but you should spend some time learning
 So far you can press SPACEBAR to interact with objects that have the "Interact Cube" on them.
 The "Interact Cube" has the "InteractableObject" script which gives information on what to display like a name, messages, and options.
 When the player's "Interact Cube" intersects with a non-player "Interact Cube", the player can press SPACE to interact with it.
-Know that you can interact with objects through walls so I made all interact cubes not close to a wall the player can go behind
+Know that you can interact with objects through walls so I placed all "Interact Cubes" away from walls the player can go behind
 
-"PanelClass" is used in "CanvasController" to set the sprites and text in a panel
-"Canvas Controller" is used to get the text from an "Interact Cube's" "InteractableObject" and put it on "PanelClass'" text
+"PanelClass" is used by "CanvasController" to set the sprites and text in a panel
+"Canvas Controller" is used to get the text from an "Interact Cube's" "InteractableObject" and put it on "PanelClass" text
 
 "CheckListScript" checks boxes on a Clipboard image when AddItem(int X) is used on it (X is which box to check).
+	AddItem() occurs whenever you complete a task such as doing a virtual call
+	I added a DEBUG where if you press "1" it does AddItem() but does not actually complete the task. This is because I don't want to play the whole game to test one part
 "GuideArrow" just moves an arrow around the scene, but CheckListScript calls on it
 
-"CleanUp" is not finished but you are supposed to be able to clean up the table
+"CleanUp" is not finished but you are supposed to be able to clean up the table by dragging and dropping trash.
 
 
 There is something wrong with the "Press SPACE to continue" text. 
-Sometimes when you press SPACEBAR really quickly the text stays, allowing you to skip un-skippable parts like questions.
-I am REALLY not sure why it happens because the WaitForSecondsRealTime should prevent it.
+Sometimes when you press SPACEBAR really quickly before the message finishes, the "Press SPACE to continue" text stays, allowing you to skip un-skippable parts like questions.
+I am REALLY not sure why it happens since WaitForSecondsRealTime should prevent it.
 
 
 Do not rush on coding. Don't feel like you have to get progress to show to the higher-ups

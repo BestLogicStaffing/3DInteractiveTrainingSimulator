@@ -8,7 +8,7 @@ TagManager:
   - SpeakerText
   - ParagraphText
   - Interactable
-  - Drag
+  - Trash
   layers:
   - Default
   - TransparentFX

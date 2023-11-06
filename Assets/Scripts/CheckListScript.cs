@@ -8,7 +8,7 @@ using TMPro;
  * Fall 2023:
  * Script for the CheckList or TaskList (whatever you call it) in the Canvas
  * You can check boxes, but not uncheck them (why would you need to)
- * It checks what item has been added and checks a box (it does not keep the information of the item after this)
+ * It checks what item has been "added" and checks a box (it does not keep the information of the item after this (nothing is actually added))
  * When an item is added it increases an integer which will do something once we have an ending
  * 
  * Reserved numbers: -1 for CheckList, 0 for Sign Contract, 1 for Virtual Call, 2 for Clean Up, -99 for anything else
@@ -33,11 +33,24 @@ public class CheckListScript : MonoBehaviour
     public bool checkListAppeared = false;
 
     public int total_items = 0;
+    int debug_item = -1; //when pressing 1 it will AddItem(). Just so that I don't have to play the whole game to test
 
     private void Start()
     {
         gameObject.GetComponent<CanvasGroup>().alpha = 0;
         arrow = gameObject.GetComponent<GuideArrow>();
+    }
+
+    private void Update()
+    {
+        //DEBUG STUFF THAT MUST BE DISABLED WHEN THE GAME IS FINISHED
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            //BE CAREFUL SINCE IT DOES NOT COMPLETE TASKS IT JUST SKIPS THEM
+            Debug.Log($"just added debug item {debug_item}");
+            AddItem(debug_item);
+            debug_item++;
+        }
     }
 
     public void AddItem(int i)
