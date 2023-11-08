@@ -13,7 +13,7 @@ public class CleanUp : MonoBehaviour
     GameObject player_camera, clean_up_camera;
 
     [SerializeField]
-    PlayerMovement playerMovement;
+    GameObject player;
 
     [SerializeField]
     GameObject checkList_object;
@@ -36,6 +36,7 @@ public class CleanUp : MonoBehaviour
         {
             trash.GetComponent<DragObject>().in_clean_up = true;
         }
+        player.transform.GetChild(4).gameObject.SetActive(false);   //turn off interact cube since it creates "dead zones" where you cannot click and drag in it
     }
 
     public void FinishCleanUp()
@@ -46,5 +47,6 @@ public class CleanUp : MonoBehaviour
         player_camera.SetActive(true); player_camera.gameObject.tag = "MainCamera";
         clean_up_camera.SetActive(false); clean_up_camera.gameObject.tag = "Untagged";
         checkList_object.SetActive(true);
+        player.transform.GetChild(4).gameObject.SetActive(true);
     }
 }

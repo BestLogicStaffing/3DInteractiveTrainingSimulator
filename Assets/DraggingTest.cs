@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Just used in DragDropTest scene so that the objects can be moved
+ */
+
 public class DraggingTest : MonoBehaviour
 {
     void Start()

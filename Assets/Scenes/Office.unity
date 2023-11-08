@@ -6762,7 +6762,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 941530743}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &678186030
 GameObject:
@@ -12985,7 +12985,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 941530743}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!20 &1435583171
 Camera:
@@ -13955,7 +13955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player_camera: {fileID: 963194225}
   clean_up_camera: {fileID: 1435583168}
-  playerMovement: {fileID: 1777542142}
+  player: {fileID: 1705036333}
   checkList_object: {fileID: 692296392}
 --- !u!1 &1637355689
 GameObject:

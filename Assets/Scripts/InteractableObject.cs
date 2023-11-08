@@ -23,8 +23,8 @@ public class InteractableObject : MonoBehaviour
 
     public int[] when_show_options; //how many messages does the player have to read before choosing an option? (MUST BE WITHIN MESSAGES LENGTH)
     public string[] option_messages; //the text on the options (leave a message blank if you want multiple options in 1 conversation)
-    public int[] correct_answers;
+    public int[] correct_answers; //a list of what the correct answers are
 
-    public int item_slot; //what item number is it / what order is it in the game
-    public bool hide_object;
+    public int item_slot; //what item number is it / what order is it in the game?
+    public bool hide_object; //should the gameObject SetActive(false)?
 }
